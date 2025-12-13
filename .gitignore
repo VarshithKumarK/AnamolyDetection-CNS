@@ -1,0 +1,4 @@
+ml_service/models/*
+backend/.env
+ml_service/data/*
+frontend/.env

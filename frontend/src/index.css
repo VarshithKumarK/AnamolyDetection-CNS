@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0b1220;
+  --card: #1e293b; /* Slightly lighter than bg for contrast */
+  --card-hover: #334155;
+  --primary-start: #7c3aed;
+  --primary-end: #06b6d4;
+  --accent: #f97316;
+  --muted: #94a3b8;
+  --text-main: #f8fafc;
+  --text-secondary: #cbd5e1;
+}
+
+@theme {
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-primary-start: var(--primary-start);
+  --color-primary-end: var(--primary-end);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+
+  --animate-fade: fade 0.3s ease-in-out;
+
+  @keyframes fade {
+    0% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Global Styles */
+body {
+  background-color: var(--bg);
+  color: var(--text-main);
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Utilities */
+.btn-primary {
+  @apply bg-gradient-to-r from-[var(--primary-start)] to-[var(--primary-end)] text-white font-semibold rounded-lg shadow-lg px-4 py-2 transition-all duration-200 transform hover:-translate-y-0.5 hover:shadow-xl focus:ring-2 focus:ring-cyan-400 focus:outline-none;
+}
+
+.btn-secondary {
+  @apply border border-[var(--muted)] text-[var(--text-secondary)] font-medium rounded-lg px-4 py-2 hover:bg-white/5 transition-all duration-200;
+}
+
+.card {
+  @apply bg-[var(--card)] rounded-xl shadow-lg border border-white/5 p-6 transition-all duration-200 hover:border-white/10;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--primary-start)] to-[var(--primary-end)];
+}
