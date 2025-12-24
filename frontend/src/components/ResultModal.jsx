@@ -3,6 +3,8 @@ import { X, AlertTriangle, CheckCircle, Activity, BarChart2 } from 'lucide-react
 const ResultModal = ({ isOpen, onClose, data }) => {
   if (!isOpen || !data) return null;
 
+  if (!isOpen || !data) return null;
+
   const isAnomaly = ['Anomaly', 'ANOMALY'].includes(data.final_label);
 
   return (
@@ -136,6 +138,73 @@ const ResultModal = ({ isOpen, onClose, data }) => {
                         </div>
                     </div>
                 </div>
+
+                {/* Network & Security Context (NEW) */}
+                {data.network_context && (
+                    <div>
+                        <h3 className="text-lg font-medium text-gray-200 mb-4 flex items-center">
+                            <Activity className="w-5 h-5 mr-2 text-emerald-400"/>
+                            Network & Security Context
+                        </h3>
+                         <div className="bg-gray-800/30 rounded-xl border border-gray-700/50 p-5">
+                            <div className="grid grid-cols-2 gap-6">
+                                <div>
+                                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Traffic Profile</p>
+                                    <div className="space-y-2">
+                                         <div className="flex justify-between">
+                                            <span className="text-gray-400 text-sm">Protocol</span>
+                                            <span className="text-gray-200 font-mono text-sm">{data.network_context.proto?.toUpperCase()} ({data.network_context.service})</span>
+                                        </div>
+                                         <div className="flex justify-between">
+                                            <span className="text-gray-400 text-sm">State</span>
+                                            <span className="text-gray-200 font-mono text-sm">{data.network_context.state}</span>
+                                        </div>
+                                         <div className="flex justify-between">
+                                            <span className="text-gray-400 text-sm">Duration</span>
+                                            <span className="text-gray-200 font-mono text-sm">{data.network_context.duration?.toFixed(4)}s</span>
+                                        </div>
+                                         <div className="flex justify-between">
+                                            <span className="text-gray-400 text-sm">Total Bytes</span>
+                                            <span className="text-gray-200 font-mono text-sm">{(data.network_context.total_bytes / 1024).toFixed(2)} KB</span>
+                                        </div>
+                                         <div className="flex justify-between">
+                                            <span className="text-gray-400 text-sm">Heuristic</span>
+                                            <span className={`text-sm font-medium ${data.network_context.heuristic_analysis === 'Encrypted' ? 'text-amber-400' : 'text-blue-400'}`}>
+                                                {data.network_context.heuristic_analysis}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p className="text-xs text-gray-500 uppercase tracking-wider mb-1">Derived Metrics</p>
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-400 text-sm">Asymmetry</span>
+                                            <span className="text-gray-200 font-mono text-sm">{data.network_context.traffic_asymmetry?.toFixed(2)}</span>
+                                        </div>
+                                        <div className="flex justify-between">
+                                            <span className="text-gray-400 text-sm">Packet Density</span>
+                                            <span className="text-gray-200 font-mono text-sm">{data.network_context.packet_density?.toFixed(0)}/s</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                             {/* Payload/Encryption Meter */}
+                            <div className="mt-4 pt-4 border-t border-gray-700/50">
+                                 <div className="flex justify-between items-end mb-1">
+                                    <span className="text-gray-400 text-xs">Payload Fullness (Encryption Confidence)</span>
+                                    <span className="text-indigo-300 font-mono text-xs">{data.network_context.payload_fullness?.toFixed(0)} avg bytes</span>
+                                </div>
+                                <div className="w-full bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                                    <div 
+                                        className="bg-indigo-500 h-1.5 rounded-full" 
+                                        style={{ width: `${Math.min(100, (data.network_context.payload_fullness / 1500) * 100)}%` }}
+                                    ></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
 
                  {/* Raw Data (Collapsible/Optional) */}
                  {data.sample && (
